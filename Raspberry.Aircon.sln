@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27924.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspberry.Aircon", "Raspberry.Aircon\Raspberry.Aircon.csproj", "{A2C6890A-4069-4947-AC34-221DA0A7CBA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspberry.Aircon.PiController", "Raspberry.Aircon.PiController\Raspberry.Aircon.PiController.csproj", "{BE086119-ED37-41E7-B575-F5874575E8DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A2C6890A-4069-4947-AC34-221DA0A7CBA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2C6890A-4069-4947-AC34-221DA0A7CBA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2C6890A-4069-4947-AC34-221DA0A7CBA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE086119-ED37-41E7-B575-F5874575E8DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE086119-ED37-41E7-B575-F5874575E8DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE086119-ED37-41E7-B575-F5874575E8DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE086119-ED37-41E7-B575-F5874575E8DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
