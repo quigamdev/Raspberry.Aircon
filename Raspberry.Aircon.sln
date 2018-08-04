@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27924.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspberry.Aircon", "Raspberry.Aircon\Raspberry.Aircon.csproj", "{A2C6890A-4069-4947-AC34-221DA0A7CBA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspberry.Aircon.Interface", "Raspberry.Aircon\Raspberry.Aircon.Interface.csproj", "{A2C6890A-4069-4947-AC34-221DA0A7CBA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspberry.Aircon.PiController", "Raspberry.Aircon.PiController\Raspberry.Aircon.PiController.csproj", "{BE086119-ED37-41E7-B575-F5874575E8DA}"
 EndProject
