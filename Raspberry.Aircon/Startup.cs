@@ -1,19 +1,15 @@
 ﻿using System;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using DotVVM.Framework.Hosting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Raspberry.Aircon.Hubs;
+using Raspberry.Aircon.Interface.Hubs;
 
-
-namespace Raspberry.Aircon
+namespace Raspberry.Aircon.Interface
 {
     public class Startup
     {
@@ -31,8 +27,9 @@ namespace Raspberry.Aircon
                     options.HandshakeTimeout = TimeSpan.FromSeconds(30);
                 })
                 .AddJsonProtocol(options =>
-            {
-                options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver();
+                {
+                    options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Objects;
+                    options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver();
             });
             services.AddDotVVM();
         }

@@ -18,6 +18,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Remove="dotvvm_serialized_config.json.tmp" />
+        <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
         <None Remove="Views\MasterPage.dotmaster" />
     </ItemGroup>
     <ItemGroup>
@@ -33,5 +34,8 @@
     </ItemGroup>
     <ItemGroup>
         <DotNetCliToolReference Include="DotVVM.Compiler.Light" Version="2.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Raspberry.Aircon.Models\Raspberry.Aircon.Models.csproj" />
     </ItemGroup>
 </Project>

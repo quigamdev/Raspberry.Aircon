@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotVVM.Framework.ViewModel;
+﻿using DotVVM.Framework.ViewModel;
 
-namespace Raspberry.Aircon.ViewModels
+namespace Raspberry.Aircon.Interface.ViewModels
 {
     public class MasterPageViewModel : DotvvmViewModelBase
     {

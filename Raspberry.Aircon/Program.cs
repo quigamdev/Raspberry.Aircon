@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Raspberry.Aircon
+namespace Raspberry.Aircon.Interface
 {
     public class Program
     {
@@ -18,6 +13,7 @@ namespace Raspberry.Aircon
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseIISIntegration()
                 .Build();
     }
 }

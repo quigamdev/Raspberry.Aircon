@@ -1,6 +1,6 @@
-﻿@viewModel Raspberry.Aircon.ViewModels.DefaultViewModel, Raspberry.Aircon
+﻿@viewModel Raspberry.Aircon.Interface.ViewModels.DefaultViewModel, Raspberry.Aircon.Interface
 @masterPage Views/MasterPage.dotmaster
 <dot:Content ContentPlaceHolderID="MainContent">
 
-	<h1>{{value: Title}}</h1>
+    <h1>{{value: Title}}</h1>
 </dot:Content>
