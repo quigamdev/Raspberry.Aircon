@@ -1,66 +1,59 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
-using Newtonsoft.Json;
 using Raspberry.Aircon.Models;
+using Raspberry.Aircon.PiController.Operations;
+using Raspberry.SignalR.Operations;
 
 namespace Raspberry.Aircon.PiController
 {
     class Program
     {
-        private static OperationResolver Resolver { get; } = new OperationResolver();
+        public static OperationResolver<RpiOperationContracts> OperationResolver { get; } = new OperationResolver<RpiOperationContracts>();
+        private static HubFacade Hub { get; set; }
+        public static ILogger Logger { get; } = new ConsoleLogger("Default", (s, level) => true, true);
+        private static int ExitAppRequests { get; set; }
+
         static void Main(string[] args)
         {
-            Log("--------------------------------------");
-            Log("Air Conditioner Controller Client");
-            Log("--------------------------------------");
+            RegisterExitHandler();
+
+            Logger.LogInformation("Air Conditioner Controller Client");
 
             IConfigurationRoot configuration = GetConfiguration();
 
-            Resolver.Initialize();
-            Log("Operations ready");
+            OperationResolver.Initialize(typeof(Program).Assembly, new DefaultOperation());
 
-            HubConnection client = BuildHubConnection(configuration);
-            client.On<OperationContract>("ReceiveMessage", ReceiveMessage);
-            client.StartAsync();
+            Logger.LogInformation("Operations ready");
 
-            Log("Connecting to server");
-
+            Hub= new HubFacade(configuration, Logger);
+            Hub.StartListen();
 
             // Wait for messages - service mode
             while (true)
             {
-                Thread.Sleep(100000);
+                Console.ReadKey();
             }
+            // ReSharper disable once FunctionNeverReturns
         }
 
-        private static HubConnection BuildHubConnection(IConfigurationRoot configuration)
+        private static void RegisterExitHandler()
         {
-            var builder = new HubConnectionBuilder();
-            builder.AddJsonProtocol(options =>
+            Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eventArgs) =>
             {
-                //set serialization options to be able to deserialize interfaces
-                options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Objects;
+                ExitAppRequests++;
+                Logger.LogInformation("Exiting application");
+                Hub.StopListen();
+                Environment.Exit(0);
             });
-            builder.WithUrl(configuration.GetValue<string>("HubUrl"));
-            builder.ConfigureLogging(b =>
-            {
-                b.AddProvider(new ConsoleLoggerProvider((s, level) =>
-                {
-                    Log(s);
-                    return true;
-                }, true));
-            });
-            var client = builder.Build();
-            return client;
         }
 
         private static IConfigurationRoot GetConfiguration()
@@ -71,28 +64,6 @@ namespace Raspberry.Aircon.PiController
 
             IConfigurationRoot configuration = configBuilder.Build();
             return configuration;
-        }
-
-        private static void ReceiveMessage(OperationContract contract)
-        {
-            Log("Message received");
-            Log($"Contract name: {contract.ToString()}");
-            var operation = Resolver.Resolve(contract);
-            if (!operation.Validate(contract))
-            {
-                Log("INVALID DATA", true);
-            }
-            else
-            {
-                operation.Execute(contract);
-            }
-        }
-
-        public static void Log(string message, bool isError = false)
-        {
-            Console.ForegroundColor = isError ? ConsoleColor.Red : ConsoleColor.Green;
-            Console.WriteLine($"(#{Thread.CurrentThread.ManagedThreadId}) {DateTime.Now}: {message}");
-            Console.ResetColor();
         }
     }
 }

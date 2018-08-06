@@ -7,6 +7,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Raspberry.Aircon.Interface.HubConnectors;
 using Raspberry.Aircon.Interface.Hubs;
 
 namespace Raspberry.Aircon.Interface
@@ -32,6 +33,9 @@ namespace Raspberry.Aircon.Interface
                     options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver();
             });
             services.AddDotVVM();
+
+            services.AddTransient<RpiControllersConnector>();
+
         }
 
 

@@ -3,4 +3,14 @@
 <dot:Content ContentPlaceHolderID="MainContent">
 
     <h1>{{value: Title}}</h1>
+
+    <div DataContext="{value:  AirConditionerViewModel}">
+        <dot:TextBox Text="{value:   Temperature }" />
+        <dot:Button Text="Start Conditioner" Click="{command: Start()}" />
+        <br />
+        <br />
+
+        <dot:Button Text="Stop Conditioner" Click="{command: Stop()}" />
+    </div>
+    <dot:ValidationSummary IncludeErrorsFromTarget="true" />
 </dot:Content>

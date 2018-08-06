@@ -1,9 +1,9 @@
 ﻿namespace Raspberry.Aircon.Models
 {
-    public enum OperationContracts
+    public enum RpiOperationContracts
     {
         UnknownContract = 0,
-        StartAirConditioner = 1, 
+        StartAirConditioner = 1,
         StopAirConditioner = 2,
     }
 }

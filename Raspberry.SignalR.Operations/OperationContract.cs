@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Raspberry.Aircon.Models
+namespace Raspberry.SignalR.Operations
 {
-    public class OperationContract
+    public class OperationContract<T> : IOperationContract<T>
     {
         /// <summary>
         /// Unique identifier of contract
         /// DO NOT CHANGE !! NEVER !!
         /// </summary>
         public Guid Id { get; set; } = Guid.NewGuid();
-        public OperationContracts Operation { get; set; }    
+        public T Operation { get; set; }    
         public IDataContract Data { get; set; }
+
         public override string ToString()
         {
             return Operation.ToString();
@@ -21,7 +20,7 @@ namespace Raspberry.Aircon.Models
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            var contract = obj as OperationContract;
+            var contract = obj as IOperationContract<T>;
             if (contract == null) return false;
             return contract.Id == Id;
         }

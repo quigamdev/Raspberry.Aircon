@@ -1,4 +1,4 @@
-﻿namespace Raspberry.Aircon.Models
+﻿namespace Raspberry.SignalR.Operations
 {
     public class ValidationResult
     {
