@@ -26,7 +26,7 @@ namespace Raspberry.Aircon.PiController
         {
             RegisterExitHandler();
 
-
+            InitializeDevices();
 
             Logger.LogInformation("Air Conditioner Controller Client");
 
@@ -47,14 +47,25 @@ namespace Raspberry.Aircon.PiController
             // ReSharper disable once FunctionNeverReturns
         }
 
+        private static void InitializeDevices()
+        {
+            new LedLightsFacade().SwitchOff();
+        }
+
         private static void RegisterExitHandler()
         {
             Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eventArgs) =>
             {
                 Logger?.LogInformation("Exiting application");
                 Hub?.StopListen();
+                DisposeDevices();
                 Environment.Exit(0);
             });
+        }
+
+        private static void DisposeDevices()
+        {
+            new LedLightsFacade().SwitchOff();
         }
 
         private static IConfigurationRoot GetConfiguration()

@@ -9,6 +9,7 @@ namespace Raspberry.Aircon.PiController.Facades
 {
     public class LedLightsFacade :FacadeBase
     {
+        protected bool GpioPowerOffSignalValue { get; set; } = true;
         public void SwitchOn()
         {
             Logger.LogInformation("GPIO 26 ON");
@@ -21,10 +22,10 @@ namespace Raspberry.Aircon.PiController.Facades
             blinkingPin.PinMode = GpioPinDriveMode.Output;
 
             // perform writes to the pin by toggling the isOn variable
-            blinkingPin.Write(true);
+            blinkingPin.Write(!GpioPowerOffSignalValue);
             Logger.LogInformation("GPIO 26 Output written");
-
         }
+
         public void SwitchOff()
         {
             Logger.LogInformation("GPIO 26 OFF");
@@ -37,9 +38,8 @@ namespace Raspberry.Aircon.PiController.Facades
             blinkingPin.PinMode = GpioPinDriveMode.Output;
 
             // perform writes to the pin by toggling the isOn variable
-            blinkingPin.Write(false);
+            blinkingPin.Write(GpioPowerOffSignalValue);
             Logger.LogInformation("GPIO 26 Output written");
-
         }
     }
 }
