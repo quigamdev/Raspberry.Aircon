@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Raspberry.Aircon.Models;
+using Raspberry.Aircon.PiController.Facades;
 using Raspberry.Aircon.PiController.Operations;
 using Raspberry.SignalR.Operations;
 
@@ -20,22 +21,27 @@ namespace Raspberry.Aircon.PiController
         public static OperationResolver<RpiOperationContracts> OperationResolver { get; } = new OperationResolver<RpiOperationContracts>();
         private static HubFacade Hub { get; set; }
         public static ILogger Logger { get; } = new ConsoleLogger("Default", (s, level) => true, true);
-        private static int ExitAppRequests { get; set; }
 
         static void Main(string[] args)
         {
+            var a = new LedLightsFacade();
+            a.SwitchOn();
+
             RegisterExitHandler();
+            
 
-            Logger.LogInformation("Air Conditioner Controller Client");
+            //TODO: Uncomment code below after testing LedLightsFacade 
 
-            IConfigurationRoot configuration = GetConfiguration();
+            //Logger.LogInformation("Air Conditioner Controller Client");
 
-            OperationResolver.Initialize(typeof(Program).Assembly, new DefaultOperation());
+            //IConfigurationRoot configuration = GetConfiguration();
 
-            Logger.LogInformation("Operations ready");
+            //OperationResolver.Initialize(typeof(Program).Assembly, new DefaultOperation());
 
-            Hub= new HubFacade(configuration, Logger);
-            Hub.StartListen();
+            //Logger.LogInformation("Operations ready");
+
+            //Hub= new HubFacade(configuration, Logger);
+            //Hub.StartListen();
 
             // Wait for messages - service mode
             while (true)
@@ -49,9 +55,8 @@ namespace Raspberry.Aircon.PiController
         {
             Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eventArgs) =>
             {
-                ExitAppRequests++;
-                Logger.LogInformation("Exiting application");
-                Hub.StopListen();
+                Logger?.LogInformation("Exiting application");
+                Hub?.StopListen();
                 Environment.Exit(0);
             });
         }
