@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Raspberry.SignalR.Operations
 {
     public class OperationResolver<T>
     {
-        public void Initialize(Assembly assemblyContainingOperations, IOperation<T> defaultOperation)
+        private ILogger logger;
+
+        public void Initialize(Assembly assemblyContainingOperations, IOperation<T> defaultOperation, ILogger logger)
         {
+            logger.LogInformation("Initializing operations resolver");
+            this.logger = logger;
             DefaultOperation = defaultOperation;
             var operationBase = typeof(IOperation<T>);
             AllOperations = GetAssemblyTypes(assemblyContainingOperations).Where(s => operationBase.IsAssignableFrom(s) && s.IsClass && !s.IsAbstract)
                 .Select(s => (IOperation<T>)Activator.CreateInstance(s, true)).ToList();
             AssertConfigurationIsValid();
+            WriteRegisteredOperations();
+        }
+
+        private void WriteRegisteredOperations()
+        {
+            logger.LogDebug("Registered operations: \r\n" + string.Join("\r\n", AllOperations.Select(s => s.OperationIdentifier.ToString()).ToArray()));
         }
 
         private IEnumerable<IOperation<T>> AllOperations { get; set; }

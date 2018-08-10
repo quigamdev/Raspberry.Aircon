@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using DotVVM.Framework.Hosting;
 using DotVVM.Framework.ViewModel;
 using DotVVM.Framework.ViewModel.Validation;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Raspberry.Aircon.Interface.HubConnectors;
 using Raspberry.Aircon.Interface.Hubs;
 using Raspberry.Aircon.Models;
@@ -13,11 +13,11 @@ using Raspberry.SignalR.Operations;
 
 namespace Raspberry.Aircon.Interface.ViewModels
 {
-    public class AirConditionerViewModel
+    public class AirConditionerViewModel : HubViewModel
     {
         private IDotvvmRequestContext Context { get; }
 
-        public AirConditionerViewModel(IDotvvmRequestContext context)
+        public AirConditionerViewModel(IDotvvmRequestContext context) : base(context)
         {
             Context = context;
         }
@@ -50,14 +50,11 @@ namespace Raspberry.Aircon.Interface.ViewModels
             }
             catch (OperationDataValidationException e)
             {
-                Context.ModelState.Errors.AddRange(e.Results.Select(s=> new ViewModelValidationError(){ ErrorMessage = s.Message}));
+                Context.ModelState.Errors.AddRange(e.Results.Select(s => new ViewModelValidationError() { ErrorMessage = s.Message }));
                 Context.FailOnInvalidModelState();
             }
         }
 
-        private RpiControllersConnector GetHub()
-        {
-            return Context.Services.GetRequiredService<RpiControllersConnector>();
-        }
+
     }
 }

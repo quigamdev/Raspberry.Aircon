@@ -24,24 +24,20 @@ namespace Raspberry.Aircon.PiController
 
         static void Main(string[] args)
         {
-            var a = new LedLightsFacade();
-            a.SwitchOn();
-
             RegisterExitHandler();
-            
 
-            //TODO: Uncomment code below after testing LedLightsFacade 
 
-            //Logger.LogInformation("Air Conditioner Controller Client");
 
-            //IConfigurationRoot configuration = GetConfiguration();
+            Logger.LogInformation("Air Conditioner Controller Client");
 
-            //OperationResolver.Initialize(typeof(Program).Assembly, new DefaultOperation());
+            IConfigurationRoot configuration = GetConfiguration();
 
-            //Logger.LogInformation("Operations ready");
+            OperationResolver.Initialize(typeof(Program).Assembly, new DefaultOperation(), Logger);
 
-            //Hub= new HubFacade(configuration, Logger);
-            //Hub.StartListen();
+            Logger.LogInformation("Operations ready");
+
+            Hub = new HubFacade(configuration, Logger);
+            Hub.StartListen();
 
             // Wait for messages - service mode
             while (true)

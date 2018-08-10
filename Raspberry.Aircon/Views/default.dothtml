@@ -4,6 +4,12 @@
 
     <h1>{{value: Title}}</h1>
 
+    <h2>Led lights</h2>
+    <div DataContext="{value:  LedLightsViewModel}">
+        <dot:Button Text="Switch On" Click="{command: SwitchOn()}" />
+        <dot:Button Text="Switch Off" Click="{command: SwitchOff()}" />
+    </div>
+    <h2>Air Conditioner</h2>
     <div DataContext="{value:  AirConditionerViewModel}">
         <dot:TextBox Text="{value:   Temperature }" />
         <dot:Button Text="Start Conditioner" Click="{command: Start()}" />

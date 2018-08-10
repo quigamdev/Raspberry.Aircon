@@ -8,6 +8,18 @@ namespace Raspberry.Aircon.Models.Validations
 {
     public class NoOperationDataValidator : IRpiOperationDataValidator
     {
+        private readonly RpiOperationContracts[] supported;
+
+        public NoOperationDataValidator()
+        {
+            supported = new[]
+            {
+                RpiOperationContracts.StopAirConditioner,
+                RpiOperationContracts.SwitchOffLedLights,
+                RpiOperationContracts.SwitchOnLedLights
+            };
+        }
+
         public IEnumerable<ValidationResult> Validate(IDataContract data)
         {
             return new List<ValidationResult>();
@@ -15,7 +27,7 @@ namespace Raspberry.Aircon.Models.Validations
 
         public bool IsModelSupported(params RpiOperationContracts[] contracts)
         {
-            var supported = new[] { RpiOperationContracts.StopAirConditioner };
+         
             return contracts.Any(s => supported.Contains(s));
         }
     }

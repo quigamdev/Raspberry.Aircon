@@ -76,11 +76,12 @@ namespace Raspberry.Aircon.PiController
             {
                 foreach (var result in validation)
                 {
-                    logger.LogError(result.Message);
+                    logger.LogError(result.Message ?? "Generic error occurred");
                 }
             }
             else
             {
+                logger.LogInformation($"Executing operation :{contract.Operation}");
                 operation.Execute(contract);
             }
         }

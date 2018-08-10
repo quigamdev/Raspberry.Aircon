@@ -12,7 +12,7 @@ namespace Raspberry.Aircon.PiController.Facades
         public void SwitchOn()
         {
             Logger.LogInformation("GPIO 26 ON");
-            return;
+            
             // Get a reference to the pin you need to use.
             // All 3 methods below are exactly equivalent
             var blinkingPin = Pi.Gpio.Pin26;
@@ -22,6 +22,24 @@ namespace Raspberry.Aircon.PiController.Facades
 
             // perform writes to the pin by toggling the isOn variable
             blinkingPin.Write(true);
+            Logger.LogInformation("GPIO 26 Output written");
+
+        }
+        public void SwitchOff()
+        {
+            Logger.LogInformation("GPIO 26 OFF");
+
+            // Get a reference to the pin you need to use.
+            // All 3 methods below are exactly equivalent
+            var blinkingPin = Pi.Gpio.Pin26;
+
+            // Configure the pin as an output
+            blinkingPin.PinMode = GpioPinDriveMode.Output;
+
+            // perform writes to the pin by toggling the isOn variable
+            blinkingPin.Write(false);
+            Logger.LogInformation("GPIO 26 Output written");
+
         }
     }
 }
