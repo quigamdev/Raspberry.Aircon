@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Authentication;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,9 @@ namespace Raspberry.Aircon.PiController
                 //set serialization options to be able to deserialize interfaces
                 options.PayloadSerializerSettings.TypeNameHandling = TypeNameHandling.Objects;
             });
-            builder.WithUrl(configuration.GetValue<string>("HubUrl"));
+            var url = configuration.GetValue<string>("HubUrl");
+            builder.WithUrl(url);
+            logger.LogTrace($"Creating hub for {url}");
             if (bool.Parse(configuration["HubDebugLogging"]))
             {
                 builder.ConfigureLogging(b =>
@@ -35,7 +38,28 @@ namespace Raspberry.Aircon.PiController
             }
 
             Client = builder.Build();
+            Client.Closed += TryReconnect;
             Client.On<RpiOperationContract>("ServerToClient", ReceiveMessage);
+        }
+
+        private async Task TryReconnect(Exception arg)
+        {
+            if (RequestedExit) return;
+            logger.LogTrace("Connection lost ...");
+            var connected = false;
+            while (!connected)
+            {
+                await Task.Delay(2000);
+                logger.LogTrace("Trying to reconnect ...");
+                try
+                {
+                    StartListen();
+                    connected = true;
+                }
+                catch (Exception e)
+                {
+                }
+            }
         }
 
         public void SendContract(IRpiOperationContract contract)
@@ -60,9 +84,12 @@ namespace Raspberry.Aircon.PiController
 
         public void StopListen()
         {
+            this.RequestedExit = true;
             logger.LogInformation("Disconnecting from server");
             Task.Run(async () => { await Client.StopAsync(); }).Wait();
         }
+
+        private bool RequestedExit { get; set; }
 
         public HubConnection Client { get; set; }
 
