@@ -1,22 +1,33 @@
 ﻿@viewModel Raspberry.Aircon.Interface.ViewModels.DefaultViewModel, Raspberry.Aircon.Interface
 @masterPage Views/MasterPage.dotmaster
 <dot:Content ContentPlaceHolderID="MainContent">
+    <div class="container">
 
-    <h1>{{value: Title}}</h1>
+        <h1>{{value: Title}}</h1>
 
-    <h2>Led lights</h2>
-    <div DataContext="{value:  LedLightsViewModel}">
-        <dot:Button Text="Switch On" Click="{command: SwitchOn()}" />
-        <dot:Button Text="Switch Off" Click="{command: SwitchOff()}" />
+        <h2 class="mar-top2">Led lights</h2>
+        <div class="row" DataContext="{value:  LedLightsViewModel}">
+            <div class="col-md-3">
+                <dot:Button class="btn btn-primary" Text="Switch On" Click="{command: SwitchOn()}" /> &nbsp;&nbsp;&nbsp;
+                <dot:Button class="btn btn-secondary" Text="Switch Off" Click="{command: SwitchOff()}" />
+            </div>
+        </div>
+        <h2 class="mar-top3">Air Conditioner</h2>
+        <div class="row" DataContext="{value:  AirConditionerViewModel}">
+            <div class="col-md-3">
+                <label class="form-group">
+                    Temperature
+                    <dot:TextBox class="form-control" Text="{value:   Temperature }" />
+                </label>
+            </div>
+        </div>
+        <div class="row" DataContext="{value:  AirConditionerViewModel}">
+            <div class="col-md-6">
+                <dot:Button Text="Start Conditioner" class="btn btn-danger mar-top1" Click="{command: Start()}" />&nbsp;&nbsp;&nbsp;
+                <dot:Button Text="Stop Conditioner" class="btn btn-secondary mar-top1" Click="{command: Stop()}" />
+            </div>
+        </div>
+        <dot:ValidationSummary IncludeErrorsFromTarget="true" />
     </div>
-    <h2>Air Conditioner</h2>
-    <div DataContext="{value:  AirConditionerViewModel}">
-        <dot:TextBox Text="{value:   Temperature }" />
-        <dot:Button Text="Start Conditioner" Click="{command: Start()}" />
-        <br />
-        <br />
 
-        <dot:Button Text="Stop Conditioner" Click="{command: Stop()}" />
-    </div>
-    <dot:ValidationSummary IncludeErrorsFromTarget="true" />
 </dot:Content>
